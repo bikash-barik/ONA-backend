@@ -28,8 +28,8 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import pkg from "firebase-admin";
 const { initializeApp, credential, firestore } = pkg;
-import admin from 'firebase-admin';
-import cors from "cors"; 
+import admin from "firebase-admin";
+import cors from "cors";
 
 // Initialize Firebase
 // var admin = require("firebase-admin");
@@ -97,13 +97,13 @@ app.post("/submitForm", async (req, res) => {
 
     res.status(200).send("Form submitted successfully!");
   } catch (error) {
-    console.error("thats the ->",error);
+    console.error("thats the ->", error);
     res.status(500).send("Internal Server Error");
   }
 });
-app,get("/",(req,res)=>{
-res.send("server is working")
-})
+app.get("/", (req, res) => {
+  res.send("server is working");
+});
 app.post("/contactusform", async (req, res) => {
   try {
     const { name, email, contact, mscin, programs } = req.body;
