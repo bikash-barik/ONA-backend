@@ -72,7 +72,7 @@ app.post("/submitForm", async (req, res) => {
     const mailOptions = {
       from: email,
       to: "info.odissanetacademy@gmail.com",
-      subject: "Form Submission",
+      subject: "Form Submission for SubmitForm",
       text: `Hello ${name},\nThank you for your submission.
       Msc In : ${mscin} \n
       Phone Number : ${phonenumber}\n
@@ -101,9 +101,11 @@ app.post("/submitForm", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 app.get("/", (req, res) => {
   res.send("server is working");
 });
+
 app.post("/contactusform", async (req, res) => {
   try {
     const { name, email, contact, mscin, programs } = req.body;
@@ -112,7 +114,7 @@ app.post("/contactusform", async (req, res) => {
     const mailOptions = {
       from: email,
       to: "info.odissanetacademy@gmail.com",
-      subject: "Form Submission",
+      subject: "Form Submission for ContactUsForm",
       text: `Hello ${name},\nThank you for your submission.
       Msc In : ${mscin} \n
       Contact : ${contact}\n
@@ -139,6 +141,43 @@ app.post("/contactusform", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+app.post("/getemailupdate", async (req, res) => {
+  try {
+    const { name, email, contact, mscin, programs } = req.body;
+
+    // Send email
+    const mailOptions = {
+      from: email,
+      to: "info.odissanetacademy@gmail.com",
+      subject: "Form Submission for GetEmailUpdate",
+      text: `Hello ${name},\nThank you for your submission.
+      Msc In : ${mscin} \n
+      Contact : ${contact}\n
+      Programs: ${programs.join(", ")}\n`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // Save form data to Firebase
+    const formData = {
+      name,
+      email,
+      contact,
+      mscin,
+      programs,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    await db.collection("getEmailUpdate").add(formData);
+
+    res.status(200).send("Form submitted successfully!");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
