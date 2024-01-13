@@ -101,6 +101,9 @@ app.post("/submitForm", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+app,get("/",(req,res)=>{
+res.send("server is working")
+})
 app.post("/contactusform", async (req, res) => {
   try {
     const { name, email, contact, mscin, programs } = req.body;
